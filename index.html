@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Guide</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Poppins (for general text), Playfair Display (for titles) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom CSS Variables for consistent theming */
+        :root {
+            --primary-color: #7F00FF; /* Electric Violet */
+            --secondary-color: #E100FF; /* Neon Pink */
+            --accent-color: #00DBDE; /* Aqua */
+            --text-color-light: #E0F7FA; /* Updated: Light cyan-tinted white for text on dark backgrounds */
+            --text-color-dark: #333333; /* Dark gray for text on light backgrounds */
+            --glass-bg-color: rgba(255, 255, 255, 0.1); /* Lighter glass background */
+            --glass-border-color: rgba(255, 255, 255, 0.3); /* Lighter glass border */
+            --glass-shadow-color: rgba(31, 38, 135, 0.4); /* Stronger shadow */
+
+            /* Updated main body gradient colors */
+            --body-gradient-start: #6A11CB; /* Deep Purple */
+            --body-gradient-mid: #2575FC;   /* Bright Blue */
+            --body-gradient-end: #00DBDE;   /* Aqua */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            min-height: 100vh;
+            /* Updated background gradient for the main page with three colors */
+            background: linear-gradient(135deg, var(--body-gradient-start), var(--body-gradient-mid), var(--body-gradient-end));
+            background-size: 600% 600%; /* Increased size for more dynamic animation */
+            animation: gradientShift 20s ease infinite alternate; /* Slower, alternating animation */
+            color: var(--text-color-light); /* Default text color for body, updated */
+            scroll-behavior: smooth;
+        }
+
+        /* Gradient Shift Animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Splash Screen Styles */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            /* Updated splash screen background gradient */
+            background: linear-gradient(135deg, #00C6FF, #0072FF, #8E2DE2); /* Bright Sky Blue -> Deep Blue -> Rich Purple */
+            background-size: 400% 400%;
+            animation: gradientShift 18s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+            overflow: hidden;
+            perspective: 1000px; /* For 3D transforms */
+        }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem; /* Larger */
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 255, 255, 0.7); /* Stronger glow */
+            /* Background gradient for splash screen title (remains white/light gray) */
+            background: linear-gradient(45deg, #FFFFFF, #F0F0F0, #E0E0E0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            animation: splashTextAppear 1.5s ease-out forwards, splashTextPulse 2.5s ease-in-out infinite alternate;
+            transform: scale(0.8) translateY(-20px);
+            opacity: 0;
+            position: relative;
+            z-index: 20;
+        }
+
+        .splash-tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: #E0E7FF; /* Light blue-gray for tagline */
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: taglineFadeIn 1s ease-out 1.8s forwards;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* Splash Screen Animations */
+        @keyframes splashTextAppear {
+            0% { opacity: 0; transform: scale(0.8) translateY(-20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes splashTextPulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 255, 255, 0.7); }
+            50% { text-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 50px rgba(255, 255, 255, 0.9); }
+        }
+
+        @keyframes taglineFadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Parallax elements */
+        .parallax-element {
+            will-change: transform;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeInScale 2s ease-out forwards;
+        }
+
+        .parallax-element.layer-1 {
+            width: 100vmin;
+            height: 100vmin;
+            animation-delay: 0.2s;
+            z-index: 1;
+        }
+        .parallax-element.layer-2 {
+            width: 80vmin;
+            height: 80vmin;
+            animation-delay: 0.4s;
+            z-index: 2;
+        }
+        .parallax-element.layer-3 {
+            width: 60vmin;
+            height: 60vmin;
+            animation-delay: 0.6s;
+            z-index: 3;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Main App Container */
+        #main-app {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s ease-in;
+        }
+
+        #main-app.show {
+            opacity: 1;
+        }
+
+        .glass-container {
+            background: var(--glass-bg-color);
+            backdrop-filter: blur(15px); /* Increased blur */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px 0 var(--glass-shadow-color); /* Stronger shadow */
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 900px;
+            color: var(--text-color-light); /* Text color inside glass container, updated */
+            animation: slideInUp 0.8s ease-out forwards;
+            position: relative; /* For z-index of loading spinner */
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color-light); /* Light color for labels */
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque */
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.9); /* More visible placeholder, updated */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(0, 219, 222, 0.5); /* Aqua shadow */
+            background-color: rgba(255, 255, 255, 0.25); /* Even more opaque on focus */
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #6A00CC, #D000E0); /* Darker shades on hover */
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Tab Buttons */
+        .tab-button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color-light); /* Light color for tab buttons */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, var(--accent-color), #00F2FE); /* Aqua to brighter Cyan */
+            border-color: var(--accent-color);
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: var(--text-color-dark); /* Dark text on bright active tab */
+        }
+
+
+        /* Loading Spinner */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            z-index: 50;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        #aiResultsContainer, #famousCareersContainer { /* Apply to both result containers */
+            margin-top: 2rem;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .career-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px); /* Slightly more blur for cards */
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Stronger border */
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3); /* Deeper shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px; /* Ensure consistent card height */
+        }
+
+        .career-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .career-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #00FFD7; /* Bright Cyan for card titles */
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5); /* Stronger shadow */
+        }
+
+        .career-card p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-color-light); /* Light text for card descriptions, updated */
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .career-card .view-details-btn {
+            background: linear-gradient(45deg, #E100FF, #7F00FF); /* Neon Pink to Electric Violet */
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 1rem; /* Space from description */
+            align-self: flex-end; /* Push to bottom right */
+        }
+
+        .career-card .view-details-btn:hover {
+            background: linear-gradient(45deg, #C000E0, #6A00CC); /* Darker shades on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8); /* Darker overlay */
+            backdrop-filter: blur(15px); /* Increased blur */
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 245, 0.98)); /* Very light, almost opaque */
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            color: var(--text-color-dark); /* Dark text on light modal background */
+            max-height: 90vh; /* Limit height for scrollability */
+            overflow-y: auto; /* Enable scrolling for modal content */
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: #333;
+        }
+
+        .modal-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary-color); /* Electric Violet for modal titles */
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p, .modal-content ul {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+
+        .modal-content strong {
+            color: var(--secondary-color); /* Neon Pink for strong text in modal */
+        }
+
+        /* Popup Message Box */
+        #popup-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .popup-message {
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            font-weight: 500;
+            transform: translateY(20px);
+        }
+
+        .popup-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .popup-message.error {
+            background-color: #F44336; /* Red for error */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .splash-title {
+                font-size: 3rem;
+            }
+            .splash-tagline {
+                font-size: 1.2rem;
+            }
+            .glass-container {
+                padding: 1.5rem;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 0.7rem 1.5rem;
+            }
+            .career-card h3 {
+                font-size: 1.5rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .modal-content h3 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <!-- Parallax background elements -->
+        <div class="parallax-element layer-1" data-depth="0.1">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2">
+                <circle cx="100" cy="100" r="90"/>
+                <path d="M100 10 L190 100 L100 190 L10 100 Z"/>
+            </svg>
+        </div>
+        <div class="parallax-element layer-2" data-depth="0.2">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2">
+                <rect x="20" y="20" width="160" height="160" rx="20"/>
+                <line x1="20" y1="100" x2="180" y2="100"/>
+                <line x1="100" y1="20" x2="100" y2="180"/>
+            </svg>
+        </div>
+        <div class="parallax-element layer-3" data-depth="0.3">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2">
+                <polygon points="100,10 160,50 160,150 100,190 40,150 40,50"/>
+            </svg>
+        </div>
+
+        <h1 class="splash-title">Career Compass</h1>
+        <p class="splash-tagline">Navigate Your Future with AI</p>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="main-app" class="hidden">
+        <div class="glass-container">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-6 font-playfair-display text-white drop-shadow-lg">
+                Your AI Career Guide
+            </h2>
+            <p class="text-center text-lg mb-8 text-blue-100">
+                Explore career paths with AI or browse some popular options.
+            </p>
+
+            <div class="tab-button-group">
+                <button id="tabAiGuide" class="tab-button active">
+                    <i class="fas fa-brain mr-2"></i> AI Career Guide
+                </button>
+                <button id="tabFamousCareers" class="tab-button">
+                    <i class="fas fa-star mr-2"></i> Famous Careers
+                </button>
+            </div>
+
+            <!-- AI Career Guide Tab Content -->
+            <div id="aiGuideContent" class="tab-content">
+                <div class="form-group">
+                    <label for="userInput">Describe your interests, skills, education, and what you're looking for:</label>
+                    <textarea
+                        id="userInput"
+                        placeholder="E.g., 'I enjoy problem-solving, have strong analytical skills, a degree in computer science, and am interested in tech roles. I want a career with good growth potential.' Or 'I love helping people, have good communication skills, and a high school diploma. I'm looking for a job that makes a difference.'"
+                    ></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button id="recommendButton" class="btn btn-primary">
+                        <i class="fas fa-robot"></i> Get Career Recommendations
+                    </button>
+                </div>
+
+                <div id="loading-overlay" class="loading-overlay">
+                    <div class="spinner"></div>
+                    <p>Generating recommendations...</p>
+                </div>
+
+                <div id="aiResultsContainer" class="mt-8 w-full max-w-7xl">
+                    <!-- AI-generated career cards will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Famous Careers Tab Content -->
+            <div id="famousCareersContent" class="tab-content hidden">
+                <h3 class="text-2xl md:text-3xl font-extrabold text-center mb-6 font-playfair-display text-white drop-shadow-lg">
+                    Popular Career Paths
+                </h3>
+                <p class="text-center text-lg mb-8 text-blue-100">
+                    Explore some commonly sought-after and impactful careers.
+                </p>
+                <div id="famousCareersContainer" class="mt-8 w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                    <!-- Famous career cards will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Career Details -->
+    <div id="careerDetailModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="modalCloseButton">&times;</button>
+            <h3 id="modalCareerName"></h3>
+            <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+            <p><strong>Key Skills:</strong> <ul id="modalKeySkills" class="list-disc list-inside"></ul></p>
+            <p><strong>Education Required:</strong> <span id="modalEducationRequired"></span></p>
+            <p><strong>Job Outlook:</strong> <span id="modalJobOutlook"></span></p>
+        </div>
+    </div>
+
+    <!-- Popup Message Container -->
+    <div id="popup-container"></div>
+
+    <script>
+        // Global variables for app state
+        let userInput = '';
+        let recommendedCareers = []; // For AI-generated careers
+        let selectedCareer = null;
+        let isLoading = false;
+        let currentView = 'ai-guide'; // 'ai-guide' or 'famous-careers'
+
+        // API Key for Gemini API (leave empty, Canvas will provide)
+        const API_KEY = "";
+
+        // --- Famous Careers Data ---
+        const famousCareersData = [
+            {
+                careerName: "Software Engineer",
+                description: "Designs, develops, and maintains software applications. Involves coding, testing, and debugging to create functional and efficient programs.",
+                keySkills: ["Programming (Python, Java, C++)", "Problem-solving", "Data Structures & Algorithms", "Version Control (Git)", "Debugging"],
+                educationRequired: "Bachelor's Degree in Computer Science or related field",
+                jobOutlook: "Excellent"
+            },
+            {
+                careerName: "Data Scientist",
+                description: "Analyzes complex data to extract insights and knowledge. Uses statistical methods, machine learning, and programming to solve business problems and predict trends.",
+                keySkills: ["Statistical Analysis", "Machine Learning", "Python/R", "SQL", "Data Visualization"],
+                educationRequired: "Master's Degree in Data Science, Statistics, or Computer Science",
+                jobOutlook: "Excellent"
+            },
+            {
+                careerName: "Digital Marketing Specialist",
+                description: "Develops and implements online marketing strategies to promote products or services. Focuses on SEO, social media, content marketing, and analytics.",
+                keySkills: ["SEO/SEM", "Content Marketing", "Social Media Management", "Analytics", "Communication"],
+                educationRequired: "Bachelor's Degree in Marketing, Communications, or related field",
+                jobOutlook: "Good"
+            },
+            {
+                careerName: "Registered Nurse (RN)",
+                description: "Provides direct patient care, administers medications, educates patients and families, and collaborates with healthcare teams. Works in hospitals, clinics, and other healthcare settings.",
+                keySkills: ["Patient Care", "Critical Thinking", "Communication", "Empathy", "Medical Knowledge"],
+                educationRequired: "Associate's Degree in Nursing (ADN) or Bachelor of Science in Nursing (BSN)",
+                jobOutlook: "Excellent"
+            },
+            {
+                careerName: "Graphic Designer",
+                description: "Creates visual concepts using computer software or by hand, to communicate ideas that inspire, inform, or captivate consumers. Works on logos, websites, advertisements, and more.",
+                keySkills: ["Adobe Creative Suite", "Typography", "Color Theory", "Creativity", "Attention to Detail"],
+                educationRequired: "Bachelor's Degree in Graphic Design or related field",
+                jobOutlook: "Average"
+            },
+            {
+                careerName: "Financial Analyst",
+                description: "Evaluates financial data to help businesses make informed decisions. Conducts research, analyzes trends, and prepares reports on investments and financial performance.",
+                keySkills: ["Financial Modeling", "Data Analysis", "Excel", "Communication", "Attention to Detail"],
+                educationRequired: "Bachelor's Degree in Finance, Economics, or Accounting",
+                jobOutlook: "Good"
+            }
+        ];
+
+
+        // --- DOM Elements (cached for efficiency) ---
+        const splashScreen = document.getElementById('splash-screen');
+        const mainApp = document.getElementById('main-app');
+        const userInputTextarea = document.getElementById('userInput');
+        const recommendButton = document.getElementById('recommendButton');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const aiResultsContainer = document.getElementById('aiResultsContainer'); // Specific for AI results
+        const famousCareersContainer = document.getElementById('famousCareersContainer'); // Specific for Famous Careers
+        const careerDetailModal = document.getElementById('careerDetailModal');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        const modalCareerName = document.getElementById('modalCareerName');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalKeySkills = document.getElementById('modalKeySkills');
+        const modalEducationRequired = document.getElementById('modalEducationRequired');
+        const modalJobOutlook = document.getElementById('modalJobOutlook');
+        const popupContainer = document.getElementById('popup-container');
+
+        // Tab buttons and content containers
+        const tabAiGuide = document.getElementById('tabAiGuide');
+        const tabFamousCareers = document.getElementById('tabFamousCareers');
+        const aiGuideContent = document.getElementById('aiGuideContent');
+        const famousCareersContent = document.getElementById('famousCareersContent');
+
+        // Parallax elements
+        const parallaxElements = document.querySelectorAll('.parallax-element');
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays a temporary popup message (success or error).
+         * @param {string} message - The message to display.
+         * @param {'success'|'error'} type - The type of message (determines color).
+         * @param {number} duration - How long the message should be visible in milliseconds.
+         */
+        function showPopupMessage(message, type = 'success', duration = 3000) {
+            const popup = document.createElement('div');
+            popup.className = `popup-message ${type}`;
+            popupContainer.appendChild(popup);
+
+            // Trigger reflow to ensure transition plays
+            void popup.offsetWidth;
+            popup.classList.add('show');
+
+            setTimeout(() => {
+                popup.classList.remove('show');
+                popup.addEventListener('transitionend', () => popup.remove(), { once: true });
+            }, duration);
+        }
+
+        /**
+         * Shows or hides the loading overlay.
+         * @param {boolean} show - True to show, false to hide.
+         */
+        function toggleLoading(show) {
+            isLoading = show;
+            if (show) {
+                loadingOverlay.classList.add('show');
+            } else {
+                loadingOverlay.classList.remove('show');
+            }
+            recommendButton.disabled = show;
+            userInputTextarea.disabled = show;
+        }
+
+        // --- Parallax Scrolling Logic ---
+        let ticking = false;
+
+        /**
+         * Updates the position of parallax elements based on scroll.
+         */
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+
+            parallaxElements.forEach(element => {
+                const depth = parseFloat(element.dataset.depth);
+                const translateY = -scrolled * depth;
+                element.style.transform = `translate(-50%, -50%) translateY(${translateY}px)`;
+            });
+
+            ticking = false;
+        }
+
+        /**
+         * Initializes the parallax effect by adding a scroll listener.
+         */
+        function initParallax() {
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            });
+            // Initial call to set positions
+            updateParallax();
+        }
+
+        // --- AI Integration (Gemini API Call) ---
+
+        /**
+         * Fetches career recommendations from the Gemini API based on user input.
+         * @param {string} input - The user's description of interests, skills, etc.
+         * @returns {Promise<Array<Object>>} A promise that resolves to an array of career objects.
+         */
+        async function getCareerRecommendations(input) {
+            toggleLoading(true);
+            try {
+                const chatHistory = [];
+                const prompt = `Based on the following user input: "${input}", recommend 3-5 potential career paths. For each career, provide a brief description, 3-5 key skills, required education (e.g., "Bachelor's Degree", "High School Diploma", "Master's Degree"), and a general job outlook (e.g., "Excellent", "Good", "Average", "Limited"). Make sure the key skills are concise and directly related to the career.`;
+
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    "careerName": { "type": "STRING" },
+                                    "description": { "type": "STRING" },
+                                    "keySkills": {
+                                        "type": "ARRAY",
+                                        "items": { "type": "STRING" }
+                                    },
+                                    "educationRequired": { "type": "STRING" },
+                                    "jobOutlook": { "type": "STRING" }
+                                },
+                                "propertyOrdering": ["careerName", "description", "keySkills", "educationRequired", "jobOutlook"]
+                            }
+                        }
+                    }
+                };
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error Response:", errorData);
+                    throw new Error(`API request failed with status ${response.status}: ${errorData.error.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const jsonString = result.candidates[0].content.parts[0].text;
+                    const parsedJson = JSON.parse(jsonString);
+                    return parsedJson;
+                } else {
+                    throw new Error("Invalid response structure from AI model.");
+                }
+            } catch (error) {
+                console.error("Error getting career recommendations:", error);
+                showPopupMessage(`Failed to get recommendations: ${error.message}. Please try again.`, 'error');
+                return [];
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // --- UI Rendering Functions ---
+
+        /**
+         * Creates a single career card HTML element.
+         * @param {Object} career - The career object.
+         * @returns {HTMLElement} The created div element for the career card.
+         */
+        function createCareerCard(career) {
+            const card = document.createElement('div');
+            card.className = 'career-card';
+            card.innerHTML = `
+                <h3>${career.careerName}</h3>
+                <p>${career.description}</p>
+                <button class="btn view-details-btn" data-career-name="${career.careerName}">
+                    View Details <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            `;
+            // Attach event listener to the "View Details" button
+            card.querySelector('.view-details-btn').addEventListener('click', () => {
+                openCareerDetailModal(career); // Pass the full career object
+            });
+            return card;
+        }
+
+        /**
+         * Renders the recommended career cards in the AI results container.
+         * @param {Array<Object>} careers - An array of career objects.
+         */
+        function renderAiCareerCards(careers) {
+            aiResultsContainer.innerHTML = ''; // Clear previous results
+            if (careers.length === 0) {
+                aiResultsContainer.innerHTML = `
+                    <p class="text-center text-white/80 text-lg col-span-full">
+                        No AI recommendations found. Please try again with different input.
+                    </p>
+                `;
+                return;
+            }
+
+            careers.forEach(career => {
+                aiResultsContainer.appendChild(createCareerCard(career));
+            });
+        }
+
+        /**
+         * Renders the famous career cards in the famous careers container.
+         */
+        function renderFamousCareersSection() {
+            famousCareersContainer.innerHTML = ''; // Clear previous results
+            famousCareersData.forEach(career => {
+                famousCareersContainer.appendChild(createCareerCard(career));
+            });
+        }
+
+        /**
+         * Opens the modal with detailed information about a selected career.
+         * @param {Object} career - The career object to display.
+         */
+        function openCareerDetailModal(career) {
+            selectedCareer = career;
+            modalCareerName.textContent = career.careerName;
+            modalDescription.textContent = career.description;
+
+            modalKeySkills.innerHTML = '';
+            if (career.keySkills && career.keySkills.length > 0) {
+                career.keySkills.forEach(skill => {
+                    const li = document.createElement('li');
+                    li.textContent = skill;
+                    modalKeySkills.appendChild(li);
+                });
+            } else {
+                modalKeySkills.innerHTML = '<li>N/A</li>';
+            }
+
+            modalEducationRequired.textContent = career.educationRequired || 'N/A';
+            modalJobOutlook.textContent = career.jobOutlook || 'N/A';
+
+            careerDetailModal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        /**
+         * Closes the career detail modal.
+         */
+        function closeCareerDetailModal() {
+            selectedCareer = null;
+            careerDetailModal.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+
+        /**
+         * Manages which tab content is visible.
+         * @param {string} view - The view to show ('ai-guide' or 'famous-careers').
+         */
+        function showView(view) {
+            currentView = view;
+
+            // Update tab button active states
+            tabAiGuide.classList.remove('active');
+            tabFamousCareers.classList.remove('active');
+            if (currentView === 'ai-guide') {
+                tabAiGuide.classList.add('active');
+            } else {
+                tabFamousCareers.classList.add('active');
+            }
+
+            // Toggle content visibility
+            aiGuideContent.classList.add('hidden');
+            famousCareersContent.classList.add('hidden');
+
+            if (currentView === 'ai-guide') {
+                aiGuideContent.classList.remove('hidden');
+                // If AI results were previously generated, re-render them
+                if (recommendedCareers.length > 0) {
+                    renderAiCareerCards(recommendedCareers);
+                } else {
+                    aiResultsContainer.innerHTML = ''; // Clear if no results
+                }
+            } else {
+                famousCareersContent.classList.remove('hidden');
+                renderFamousCareersSection(); // Render famous careers when tab is active
+            }
+        }
+
+
+        // --- Event Listeners ---
+
+        // Handle recommendation button click
+        recommendButton.addEventListener('click', async () => {
+            userInput = userInputTextarea.value.trim();
+            if (userInput === '') {
+                showPopupMessage('Please describe your interests, skills, and education to get recommendations.', 'error');
+                return;
+            }
+            recommendedCareers = await getCareerRecommendations(userInput);
+            renderAiCareerCards(recommendedCareers); // Render AI results
+        });
+
+        // Handle modal close button click
+        modalCloseButton.addEventListener('click', closeCareerDetailModal);
+
+        // Close modal when clicking outside the content
+        careerDetailModal.addEventListener('click', (e) => {
+            if (e.target === careerDetailModal) {
+                closeCareerDetailModal();
+            }
+        });
+
+        // Tab button listeners
+        tabAiGuide.addEventListener('click', () => showView('ai-guide'));
+        tabFamousCareers.addEventListener('click', () => showView('famous-careers'));
+
+
+        // --- Initial Application Load ---
+        window.onload = () => {
+            // Pre-fill the user input textarea
+            userInputTextarea.value = "I am interested in technology, have strong programming skills, and a Bachelor's degree in Computer Science. I'm looking for a challenging role with good career progression.";
+
+            // Show splash screen initially
+            splashScreen.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling during splash
+
+            // Initialize parallax for splash screen
+            initParallax();
+
+            // After a delay, fade out splash screen and reveal main app
+            setTimeout(() => {
+                splashScreen.classList.add('fade-out');
+                splashScreen.addEventListener('transitionend', () => {
+                    splashScreen.style.display = 'none';
+                    mainApp.classList.remove('hidden'); // Show main app
+                    mainApp.classList.add('show'); // Trigger fade-in animation
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    userInputTextarea.focus(); // Focus on input field
+                    showView('ai-guide'); // Show AI Guide tab by default
+                }, { once: true });
+            }, 4000); // Display splash for 4 seconds
+        };
+    </script>
+</body>
+</html>
